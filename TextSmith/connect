@@ -1,0 +1,7 @@
+#ifndef CONNECT_H
+#define CONNECT_H
+
+void connect(QAction* a, const char* signal, const char* slot) { QAction::connect(a, signal, this, slot); }
+void connect(QWidget* w, const char* signal, const char* slot) { QWidget::connect(w, signal, this, slot); }
+
+#endif // CONNECT_H

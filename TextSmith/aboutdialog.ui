@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AboutDialog</class>
+ <widget class="QDialog" name="AboutDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>373</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/TextSmith.ico</normaloff>:/TextSmith.ico</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="icons.qrc">:/TextSmith.ico</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextSmith v1.0.0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:700;&quot;&gt;TextSmith&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt; strives to be a distraction free novel editor while still supplying the tools needed to get the job done.  No fancy colors or cork board, just a simple tree layout for the document.  It also follows the OS with respect to dark mode so there is one less thing to fiddle with.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Uses the &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;Qt&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; application framework v6 for the look and feel.&lt;br/&gt;Uses the &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;Zippy&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; zip file creation library to build epub files.&lt;br/&gt;Uses &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;Lua&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; as it's scripting language, found here: &lt;/span&gt;&lt;a href=&quot;https://www.lua.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://www.lua.org/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;RTF &lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;export code based loosely on the code found on this web page: &lt;/span&gt;&lt;a href=&quot;https://www.codeproject.com/Articles/10582/rtflib-v1-0&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://www.codeproject.com/Articles/10582/rtflib-v1-0&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:8pt; font-weight:700;&quot;&gt;&lt;br/&gt;DarkMode&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; support based on code found on this web page: &lt;/span&gt;&lt;a href=&quot;https://successfulsoftware.net/2021/03/31/how-to-add-a-dark-theme-to-your-qt-application/&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#007af4;&quot;&gt;How to add a dark theme to your Qt application | Successful Software&lt;br/&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AboutDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AboutDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

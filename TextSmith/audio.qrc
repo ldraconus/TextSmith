@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/fx">
+        <file>typewriter-hit.wav</file>
+        <file>spacebar.wav</file>
+    </qresource>
+</RCC>
