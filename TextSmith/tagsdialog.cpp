@@ -11,7 +11,7 @@ TagsDialog::TagsDialog(Scene& s, QWidget *parent) :
     _scene(&s) {
     ui->setupUi(this);
 
-    QRect d = MainWindow::main_window()->_tagsDialog;
+    QRect d = MainWindow::main_window()->tagsDialog();
     QRect pos = geometry();
     int width = pos.width();
     int height = pos.height();
@@ -23,8 +23,8 @@ TagsDialog::TagsDialog(Scene& s, QWidget *parent) :
         setGeometry(pos);
     }
 
-    connect(ui->lineEdit_2, SIGNAL(returnPressed()),             SLOT(returnPressedAction()));
-    connect(ui->lineEdit,   SIGNAL(textChanged(const QString&)), SLOT(textChangedAction(const QString&)));
+    connect(ui->lineEdit_2, SIGNAL(returnPressed()),      SLOT(returnPressedAction()));
+    connect(ui->lineEdit,   SIGNAL(textChanged(QString)), SLOT(textChangedAction(QString)));
 
     ui->lineEdit->setText(_scene->name());
     addTags(_scene->tags());
@@ -36,11 +36,11 @@ TagsDialog::~TagsDialog() {
 
 void TagsDialog::addTagButton(int i, const QString& tag) {
     QFrame* edit = ui->frame;
-    QPushButton *button = new QPushButton(tag, edit);
+    QPushButton *button = new QPushButton(tag, edit); // NOLINT
     button->setCheckable(true);
 
-    int x = (i % 3) * button->geometry().width() + (i % 3 + 1) * 6;
-    int y = (i / 3) * button->geometry().height() + (i / 3 + 1) * 6;
+    int x = (i % 3) * button->geometry().width() + (i % 3 + 1) * 6;  // NOLINT
+    int y = (i / 3) * button->geometry().height() + (i / 3 + 1) * 6; // NOLINT
     QRect g = button->geometry();
     g.setX(x);
     g.setY(y);
@@ -66,7 +66,7 @@ void TagsDialog::buttonClickedAction() {
         }
     }
 
-    for (auto x: _buttons) delete x;
+    for (auto x: _buttons) delete x; // NOLINT
     _buttons.clear();
 
     addTags(_scene->tags());
@@ -82,7 +82,7 @@ void TagsDialog::returnPressedAction() {
     if (_scene->tags().indexOf(text) != -1) return;
 
     _scene->tags().append(text);
-    for (auto x: _buttons) delete x;
+    for (auto x: _buttons) delete x; // NOLINT
     _buttons.clear();
 
     addTags(_scene->tags());

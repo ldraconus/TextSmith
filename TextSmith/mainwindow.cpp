@@ -2136,7 +2136,7 @@ static void registerFileType(const QString& documentId, const QString& fileTypeN
 void MainWindow::enableShellOpen() {
 #ifdef Q_OS_WINDOWS
     if (0 != _appAtom || 0 != _systemTopicAtom) return;
-    _appAtom = ::GlobalAddAtomW((const wchar_t*) _appAtomName.utf16());
+    _appAtom = ::GlobalAddAtomW(reinterpret_cast<const wchar_t*>( _appAtomName.utf16()));
     _systemTopicAtom = ::GlobalAddAtomW((const wchar_t*) _systemTopicAtomName.utf16());
 #endif
 }
@@ -2151,38 +2151,39 @@ void MainWindow::registerExtensionHandler() {
 }
 
 void MainWindow::registerSignals() {
-    connect(ui->action_New,    SIGNAL(triggered()), SLOT(newMenuItem()));
-    connect(ui->action_Open,   SIGNAL(triggered()), SLOT(openMenuItem()));
-    connect(ui->action_Save,   SIGNAL(triggered()), SLOT(saveMenuItem()));
-    connect(ui->actionSave_As, SIGNAL(triggered()), SLOT(saveAsMenuItem()));
-    connect(ui->menu_Export, SIGNAL(aboutToShow()), SLOT(aboutToShowExportMenu()));
-    connect(ui->menu_Export, SIGNAL(aboutToHide()), SLOT(aboutToHideExportMenu()));
+    connect(ui->action_New,    SIGNAL(triggered()),   SLOT(newMenuItem()));
+    connect(ui->action_Open,   SIGNAL(triggered()),   SLOT(openMenuItem()));
+    connect(ui->action_Save,   SIGNAL(triggered()),   SLOT(saveMenuItem()));
+    connect(ui->actionSave_As, SIGNAL(triggered()),   SLOT(saveAsMenuItem()));
+    connect(ui->menu_Export,   SIGNAL(aboutToShow()), SLOT(aboutToShowExportMenu()));
+    connect(ui->menu_Export,   SIGNAL(aboutToHide()), SLOT(aboutToHideExportMenu()));
     connect(ui->action_PDF,           SIGNAL(triggered()), SLOT(pdfMenuItem()));
     connect(ui->action_EPUB,          SIGNAL(triggered()), SLOT(epubMenuItem()));
     connect(ui->action_HTML,          SIGNAL(triggered()), SLOT(htmlMenuItem()));
     connect(ui->action_Markdown,      SIGNAL(triggered()), SLOT(markdownMenuItem()));
     connect(ui->action_RTF,           SIGNAL(triggered()), SLOT(rtfMenuItem()));
     connect(ui->action_Standard_Text, SIGNAL(triggered()), SLOT(standardTextMenuItem()));
-    connect(ui->menu_Import, SIGNAL(aboutToShow()), SLOT(aboutToShowImportMenu()));
-    connect(ui->menu_Import, SIGNAL(aboutToHide()), SLOT(aboutToHideImportMenu()));
+    connect(ui->menu_Import,   SIGNAL(aboutToShow()), SLOT(aboutToShowImportMenu()));
+    connect(ui->menu_Import,   SIGNAL(aboutToHide()), SLOT(aboutToHideImportMenu()));
     connect(ui->action_Image, SIGNAL(triggered()), SLOT(imageMenuItem()));
     connect(ui->action_Text,  SIGNAL(triggered()), SLOT(textMenuItem()));
-    connect(ui->actionE_xit,   SIGNAL(triggered()), SLOT(exitClicked()));
+    connect(ui->actionE_xit,   SIGNAL(triggered()),   SLOT(exitClicked()));
+
     setMenuIcons(ui->action_New,    ":/new.ico",    ":/dark/darkNew.ico");
     setMenuIcons(ui->action_Open,   ":/file.ico",   ":/dark/darkFile.ico");
     setMenuIcons(ui->action_Save,   ":/save.ico",   ":/dark/darkSave.ico");
     setMenuIcons(ui->actionSave_As, ":/saveAs.ico", ":/dark/darkSaveAs.ico");
     setMenuIcons(ui->menu_Export,   ":/export.ico", ":/dark/darkExport.ico");
-    setMenuIcons(ui->menu_Import,   ":/import.ico", ":/dark/darkImport.ico");
-    setMenuIcons(ui->actionE_xit,   ":/exit.ico",   ":/dark/darkExit.ico");
     setMenuIcons(ui->action_PDF,           ":/pdf.ico",      ":/dark/darkPdf.ico");
     setMenuIcons(ui->action_EPUB,          ":/epub.ico",     ":/dark/darkEpub.ico");
     setMenuIcons(ui->action_HTML,          ":/html.ico",     ":/dark/darkHtml.ico");
     setMenuIcons(ui->action_Markdown,      ":/markdown.ico", ":/dark/darkMarkdown.ico");
     setMenuIcons(ui->action_RTF,           ":/rtf.ico",      ":/dark/darkRtf.ico");
     setMenuIcons(ui->action_Standard_Text, ":/text.ico",     ":/dark/darkText.ico");
+    setMenuIcons(ui->menu_Import,   ":/import.ico", ":/dark/darkImport.ico");
     setMenuIcons(ui->action_Image, ":/image.ico",    ":/dark/darkImage.ico");
     setMenuIcons(ui->action_Text,  ":/imp_text.ico", ":/dark/darkImp_text.ico");
+    setMenuIcons(ui->actionE_xit,   ":/exit.ico",   ":/dark/darkExit.ico");
 
     connect(ui->actionNew_Scene,    SIGNAL(triggered()), SLOT(newSceneMenuItem()));
     connect(ui->actionRemove_Scene, SIGNAL(triggered()), SLOT(removeSceneMenuItem()));
@@ -2230,7 +2231,7 @@ void MainWindow::registerSignals() {
     setMenuIcons(ui->action_Bold,             ":/bold.ico",         ":/dark/darkBold.ico");
     setMenuIcons(ui->action_Italic,           ":/italic.ico",       ":/dark/darkItalic.ico");
     setMenuIcons(ui->action_Underline,        ":/underline.ico",    ":/dark/darkUnderline.ico");
-    setMenuIcons(ui->action_Left_JUstify,     ":/leftJustify.ico",  ":/dark/darkReplace.ico");
+    setMenuIcons(ui->action_Left_JUstify,     ":/leftJustify.ico",  ":/dark/darkLeftJustify.ico");
     setMenuIcons(ui->action_Center,           ":/center.ico",       ":/dark/darkCenter.ico");
     setMenuIcons(ui->action_Full_Justify,     ":/fullJustify.ico",  ":/dark/darkFullJustify.ico");
     setMenuIcons(ui->action_Right_Justify,    ":/rightJustify.ico", ":/dark/darkRightJustify.ico");

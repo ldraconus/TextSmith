@@ -200,8 +200,10 @@ private:
     QRect _tagsDialog    { -1, -1, 0, 0 };
     QList<int> _fullscreenDialog { 0, 0 };
 
+public:
     static MainWindow* main_window() { return _main_window; }
 
+    QRect& tagsDialog()      { return _tagsDialog; }
     QString dir()            { return _dir; }
     QTextToSpeech* speech()  { return _speech; }
     Scene& scene(int idx)    { return _scenes[idx]; }
