@@ -4,9 +4,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17 embed_manifest_exe
 
-INCLUDEPATH += "C:/Users/chris/Documents/QtSource/Lua/lua"
-DEPENDPATH += . "C:/Users/chris/Documents/QtSource/Lua/build-lua-Desktop_Qt_6_2_0_MSVC2019_64bit-Debug/debug"
-LIBS += -L"C:/Users/chris/Documents/QtSource/Lua/build-lua-Desktop_Qt_6_2_0_MSVC2019_64bit-Debug/debug" -llua
+INCLUDEPATH += "C:/Users/chris/src/lua-5.4.6/lua"
+DEPENDPATH += . "C:/Users/chris/src/lua-5.4.6/build-lua-Desktop_Qt_6_7_0_MSVC2019_64bit-Debug"
+LIBS += -L"C:/Users/chris/src/lua-5.4.6/build-lua-Desktop_Qt_6_7_0_MSVC2019_64bit-Debug/debug" -llua
 LIBS += -lAdvapi32
 RC_ICONS = TextSmith.ico
 

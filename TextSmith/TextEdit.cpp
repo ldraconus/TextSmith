@@ -1,3 +1,3 @@
 #include "TextEdit.h"
 
-size_t TextEdit::_base = 0;
+size_t TextEdit::_base = 0;  // NOLINT

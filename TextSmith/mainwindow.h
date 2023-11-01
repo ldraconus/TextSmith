@@ -29,9 +29,12 @@ private:
 
 public:
     Scene(const QString& n, bool r = false): _doc(""), _name(n), _root(r), _wc(0) { }
-    Scene(const Scene& s): _tags(s._tags), _doc(s._doc), _name(s._name), _root(s._root), _wc(s._wc) { }
+    Scene(const Scene& s) = default;
+    Scene(Scene&& s) = default;
+    virtual ~Scene() {}
 
-    Scene& operator=(const Scene& x) { if (this != &x) { _name = x._name; _root = x._root; _doc = x._doc; _tags = x._tags; _wc = x._wc; } return *this; }
+    Scene& operator=(const Scene& x) = default;
+    Scene& operator=(Scene&& x) = default;
 
     QList<QString>& tags() { return _tags; }
 
@@ -60,7 +63,12 @@ class FindDialog : public QDialog
 
 public:
     explicit FindDialog(bool selection, QWidget *parent = nullptr);
-    ~FindDialog();
+    FindDialog(const FindDialog&) = delete;
+    FindDialog(FindDialog&&) = delete;
+    ~FindDialog() override;
+
+    FindDialog& operator=(const FindDialog&) = delete;
+    FindDialog& operator=(FindDialog&&) = delete;
 
     SearchType getType();
     QString getSearchString();
@@ -84,7 +92,12 @@ class ReplaceDialog : public QDialog
 
 public:
     explicit ReplaceDialog(bool selection, QWidget *parent = nullptr);
-    ~ReplaceDialog();
+    ReplaceDialog(const ReplaceDialog&) = delete;
+    ReplaceDialog(ReplaceDialog&&) = delete;
+    ~ReplaceDialog() override;
+
+    ReplaceDialog& operator=(const ReplaceDialog&) = delete;
+    ReplaceDialog& operator=(ReplaceDialog&&) = delete;
 
     SearchType getType();
     QString getSearchString();
@@ -170,9 +183,15 @@ public slots:
     void cleanIt() { _cleanItTimer->stop(); clean(); };
 
 public:
-    MainWindow(const QString& file, QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit MainWindow(const QString& file, QWidget *parent = nullptr);
+    MainWindow(const MainWindow&) = delete;
+    MainWindow(MainWindow&&) = delete;
+    ~MainWindow() override;
 
+    MainWindow& operator=(const MainWindow&) = delete;
+    MainWindow& operator=(MainWindow&&) = delete;
+
+private:
     QRect _aboutDialog   { -1, -1, 0, 0 };
     QRect _findDialog    { -1, -1, 0, 0 };
     QRect _optionsDialog { -1, -1, 0, 0 };
@@ -198,9 +217,12 @@ public:
 
     public:
         Position(int s = -1, int o = -1): _scene(s), _offset(o) { }
-        Position(const Position& p): _scene(p._scene), _offset(p._offset) { }
+        Position(const Position& p) = default;
+        Position(Position&& p) = default;
+        virtual ~Position() { }
 
-        Position& operator=(const Position& p) { if (this != &p) { _scene = p._scene; _offset = p._offset; } return *this; }
+        Position& operator=(const Position& p) = default;
+        Position& operator=(Position&& p) = default;
 
         bool unset() { return _scene == -1 && _offset == -1; }
 
@@ -212,10 +234,10 @@ public:
 
     class Search {
     private:
-        SearchType _range;
-        Position _current;
-        Position _start;
-        Position _stop;
+        SearchType _range {};
+        Position _current {};
+        Position _start {};
+        Position _stop {};
         QList<int> _stack;
         QString _look;
         QString _with;
@@ -264,8 +286,8 @@ private:
 
     typedef unsigned short ATOM;
 
-    ATOM _appAtom;
-    ATOM _systemTopicAtom;
+    ATOM _appAtom { };
+    ATOM _systemTopicAtom { };
     QMap<QMenu*, QMap<displayMode, QString>> _menuIcons;
     QMap<QAction*, QMap<displayMode, QString>> _actionIcons;
     QMap<QString, QAction*> _buttons;
@@ -274,11 +296,11 @@ private:
     QString _systemTopicAtomName;
     QBasicTimer* _autoSaveTimer;
     QBasicTimer* _cleanItTimer;
-    Search _request;
-    bool _dirty;
+    Search _request {};
+    bool _dirty = false;
     bool _ignore = false;
-    int _totalWc;
-    lua_State* _L;
+    int _totalWc {};
+    lua_State* _L {};
 
     QTreeWidgetItem* getItemByItemIndex(QTreeWidgetItem* item, int idx);
     void clean();
@@ -290,9 +312,13 @@ private:
     void setMenuIcons(QAction* action, QString icon, QString darkIcon);
     void setMenuIcons(QMenu* menu, QString icon, QString darkIcon);
     void setMoveButtons();
+    void setWinTitle();
     void switchIcons(displayMode to);
     bool windowsDarkThemeAvailable();
-    bool windowsIsInDarkTheme();    
+    bool windowsIsInDarkTheme();
+
+    static constexpr int BaseTextIndent = 20;
+    static constexpr int Minutes = 60000;
 
 public:
     lua_State* Lua() { return _L; }
@@ -384,7 +410,7 @@ public:
     void timerEvent(QTimerEvent* event) override;
 
 private:
-    static MainWindow* _main_window;
+    static MainWindow* _main_window; // NOLINT
 
 #include <connect>
 

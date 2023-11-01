@@ -10,7 +10,7 @@
 #include "rtf.h"
 #include "scriptsdialog.h"
 #include "text.h"
-#include "TextEdit.h"
+#include "textedit.h"
 #include "tagsdialog.h"
 
 #include <QClipboard>
@@ -417,6 +417,7 @@ static int lua_sceneName(lua_State* lua) {
     return 1;
 }
 
+// NOLINTNEXTLINE
 #define SIMPLE_LUA(x) static int lua_##x(lua_State*) {\
     MainWindow* mw = MainWindow::main_window();\
     mw->x();\
@@ -1041,6 +1042,11 @@ void MainWindow::setMoveButtons() {
     ui->actionRead_Aloud->setEnabled(_voice != -1 && parent != nullptr);
 }
 
+void MainWindow::setWinTitle()
+{
+    this->setWindowTitle("TextSmith: " + _filename);
+}
+
 void MainWindow::setScene(QTreeWidgetItem* scene, QString font, int pnts) {
     int idx = scene->data(0, Qt::ItemDataRole::UserRole).toInt();
     Scene& scn = _scenes[idx];
@@ -1489,7 +1495,7 @@ void MainWindow::newAction() {
     QTreeWidgetItem* scene = new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList("<untitled>"));
     Scene scn("");
     TextEdit text(_dir);
-    int p = _textFont.indexOf(":");
+    auto p = _textFont.indexOf(":");
     QString font = _textFont.left(p);
     QString s = _textFont.mid(p + 1);
     int size = s.toInt();
@@ -1498,7 +1504,7 @@ void MainWindow::newAction() {
     text.selectAll();
     auto cursor = text.textCursor();
     auto blk = cursor.blockFormat();
-    blk.setTextIndent(20);
+    blk.setTextIndent(BaseTextIndent);
     cursor.setBlockFormat(blk);
     text.setTextCursor(cursor);
     scn.doc(text.toHtml());
@@ -1508,6 +1514,9 @@ void MainWindow::newAction() {
     scene->setData(0, Qt::ItemDataRole::UserRole, QVariant(1));
     topLevel->insertChild(0, scene);
     if (_openItems) openAllItems();
+
+    _filename = "";
+    setWinTitle();
     clean();
 }
 
@@ -1519,7 +1528,7 @@ void MainWindow::newSceneAction() {
     QTreeWidgetItem* scene = new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList("<untitled>"));
     Scene scn("");
     TextEdit text(_dir);
-    int p = _textFont.indexOf(":");
+    auto p = _textFont.indexOf(":");
     QString font = _textFont.left(p);
     QString s = _textFont.mid(p + 1);
     int size = s.toInt();
@@ -1528,7 +1537,7 @@ void MainWindow::newSceneAction() {
     text.selectAll();
     auto cursor = text.textCursor();
     auto blk = cursor.blockFormat();
-    blk.setTextIndent(20);
+    blk.setTextIndent(BaseTextIndent);
     cursor.setBlockFormat(blk);
     text.setTextCursor(cursor);
     scn.doc(text.toHtml());
@@ -1556,9 +1565,9 @@ void MainWindow::openAction(QString infile) {
 
     QTreeWidget* tree = ui->treeWidget;
 
-    int ext = fname.lastIndexOf(".novel");
+    auto ext = fname.lastIndexOf(".novel");
     if (ext != -1) fname = fname.left(ext);
-    int sep = fname.lastIndexOf("/");
+    auto sep = fname.lastIndexOf("/");
     if (sep != -1) {
         _dir = fname.left(sep + 1);
         fname = fname.mid(sep + 1);
@@ -1589,6 +1598,8 @@ void MainWindow::openAction(QString infile) {
         return;
     }
 
+    setWinTitle();
+
     const QJsonObject& doc = top["document"].toObject();
     const QJsonObject& root = doc["root"].toObject();
     tree->clear();
@@ -1606,8 +1617,8 @@ void MainWindow::openAction(QString infile) {
         _textFont = options["textFont"].toString();
         _voice = options["voice"].toInt(-1);
         if (startSaving) {
-            if (!_autoSaveTimer) _autoSaveTimer = new QBasicTimer();
-            _autoSaveTimer->start(_autosaveInterval * 60000, this);
+            if (!_autoSaveTimer) _autoSaveTimer = new QBasicTimer(); // NOLINT
+            _autoSaveTimer->start(_autosaveInterval * Minutes, this);
         }
     }
     if (top.contains("windows")) {
@@ -1622,6 +1633,7 @@ void MainWindow::openAction(QString infile) {
             const QJsonObject& fullscr = windows["fullscreen"].toObject();
             _fullscreenDialog = arrayToList(fullscr["sizes"].toArray());
         }
+
         // load options
         toDialog(windows, "aboutdialog", _aboutDialog);
         toDialog(windows, "finddialog", _findDialog);
@@ -1975,9 +1987,9 @@ bool MainWindow::save() {
 bool MainWindow::saveAs() {
     QString filename = QFileDialog::getSaveFileName(this, "Save File", _dir, "Novels (*.novel)");
     if (filename.isEmpty()) return false;
-    int ext = filename.lastIndexOf(".novel");
+    auto ext = filename.lastIndexOf(".novel");
     if (ext != -1) filename = filename.left(ext);
-    int sep = filename.lastIndexOf("/");
+    auto sep = filename.lastIndexOf("/");
     if (sep != -1) {
         _dir = filename.left(sep + 1);
         ui->textEdit->setDir(_dir);
@@ -2087,9 +2099,9 @@ bool MainWindow::windowsIsInDarkTheme() {
 #ifdef Q_OS_WINDOWS
 static bool SetHkcrUserRegKey(QString key, const QString& value, const QString& valueName = nullptr)
 {
-    HKEY hKey;
+    HKEY hKey {};
     key.prepend("SoftwareClasses");
-    LONG lRetVal = RegCreateKey(HKEY_CURRENT_USER, (const wchar_t*) key.utf16(), &hKey);
+    LONG lRetVal = RegCreateKey(HKEY_CURRENT_USER, reinterpret_cast<const wchar_t*>(key.utf16()), &hKey);
     if (ERROR_SUCCESS == lRetVal) {
         LONG lResult = ::RegSetValueExW(hKey, valueName.isEmpty() ? 0 : (const wchar_t*) valueName.utf16(), (DWORD) 0, (DWORD) REG_SZ, (CONST BYTE*) value.utf16(), (DWORD) (value.length() + 1) * sizeof(wchar_t));
         if(::RegCloseKey(hKey) == ERROR_SUCCESS && lResult == ERROR_SUCCESS) return true;
@@ -2111,7 +2123,7 @@ static void registerFileType(const QString& documentId, const QString& fileTypeN
     if (!SetHkcrUserRegKey(QString("%1DefaultIcon").arg(documentId), QString("\"%1\",%2").arg(QDir::toNativeSeparators(qApp->applicationFilePath())).arg(appIconIndex))) return;
     LONG lSize = _MAX_PATH * 2;
     wchar_t szTempBuffer[_MAX_PATH * 2];
-    LONG lResult = ::RegQueryValue(HKEY_CLASSES_ROOT, (const wchar_t*) fileExtension.utf16(), szTempBuffer, &lSize);
+    LONG lResult = ::RegQueryValue(HKEY_CLASSES_ROOT, reinterpret_cast<const wchar_t*>(fileExtension.utf16()), szTempBuffer, &lSize);
     QString temp = QString::fromUtf16((char16_t*) szTempBuffer);
     if (lResult != ERROR_SUCCESS || temp.isEmpty() || temp == documentId) {
         // no association for that suffix
