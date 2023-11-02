@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-    <DisplayName>TextSmith Executable</DisplayName>
-    <Description>Install the editor</Description>
+    <DisplayName>TextSmith</DisplayName>
+    <Description>Install the TextSmith novel editor</Description>
     <Version>1.0.0</Version>
-    <ReleaseDate>2022-06-18</ReleaseDate>
+    <ReleaseDate>2023-11-02</ReleaseDate>
     <Licenses>
         <License name="MIT Public License Agreement" file="license.txt" />
     </Licenses>
